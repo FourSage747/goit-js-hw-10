@@ -1,21 +1,11 @@
 import SlimSelect from 'slim-select'
-const baseurl = 'https://api.thecatapi.com/v1';
-const apikey =
-  'live_KqGIRLUcJvPUmEmnCUWMZij2nNX7qMLyZvZu2jpW3hlCa55yGptbAGwJa3NPsKGJ';
+import {fetchBreeds, fetchCatByBreed} from "./cat-api.js";
 const breed = document.querySelector('.breed-select');
 const cat = document.querySelector('.cat-info');
 const loader = document.querySelector('.loader');
 const error = document.querySelector('.error');
 
-function fetchBreeds() {
-  return fetch(`${baseurl}/breeds?api_key=${apikey}`).then(resp => {
-    if (!resp.ok) {
-      throw new Error(resp.statusText);
-    }
 
-    return resp.json();
-  });
-}
 fetchBreeds()
   .then(data => {breed.insertAdjacentHTML('beforeend', create(data))
         breed.hidden = false;
@@ -36,17 +26,7 @@ function create(arr) {
     .join('');
 }
 
-function fetchCatByBreed(breedId) {
-  return fetch(
-    `${baseurl}/images/search?breed_ids=${breedId}&api_key=${apikey}`
-  ).then(resp => {
-    if (!resp.ok) {
-      throw new Error(resp.statusText);
-    }
 
-    return resp.json();
-  });
-}
 breed.addEventListener('change', () => {
     cat.style.display = 'none';
     loader.style.display = 'block';
